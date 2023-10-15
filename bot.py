@@ -55,6 +55,8 @@ class Bot:
         target_widget_coordinates = {}
         filled_red_pixels = 1
 
+
+
         img = get_screen(
             self.window_info["x"],
             self.window_info["y"],

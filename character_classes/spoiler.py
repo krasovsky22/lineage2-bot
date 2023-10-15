@@ -1,18 +1,18 @@
+
 from functions import *
 from bot import Bot
 
 
 class Spoiler (Bot):
 
-    def loop(self, stop_event):
+    def loop(self):
         """
         main bot logic
         """
 
         spoiled = False
 
-        while not stop_event.is_set():
-
+        while True:
             time.sleep(0.2)
 
             # Continue attacking if victim is alive

@@ -27,25 +27,21 @@ class Launcher:
         auto_py = AutoHotPy()
         auto_py.registerExit(auto_py.ESC, self.stop_bot_event_handler)
 
-        # init bot stop event
-        self.bot_thread_stop_event = threading.Event()
-
         # init threads
         self.auto_py_thread = threading.Thread(target=self.start_auto_py, args=(auto_py,))
-        self.bot_thread = threading.Thread(target=self.start_bot, args=(auto_py, self.bot_thread_stop_event, character_class))
+        self.bot_thread = threading.Thread(target=self.start_bot, args=(auto_py, character_class))
+        self.bot_thread.daemon = True
 
         # start threads
         self.auto_py_thread.start()
         self.bot_thread.start()
 
-    def stop_bot(self):
-        """
-        send stop signal to bot thread
-        """
-        self.bot_thread_stop_event.set()
+        self.auto_py_thread.join()
+
+        print("Main thread finished.")
 
     @staticmethod
-    def start_bot(auto, stop_event, character_class):
+    def start_bot(auto, character_class):
         """
         start bot loop
         """
@@ -56,7 +52,7 @@ class Launcher:
         }
 
         bot = classmap[character_class](auto)
-        bot.loop(stop_event)
+        bot.loop()
 
     @staticmethod
     def start_auto_py(auto):
@@ -71,5 +67,3 @@ class Launcher:
         exit the program when you press ESC
         """
         auto.stop()
-        launcher = Launcher()
-        launcher.stop_bot()

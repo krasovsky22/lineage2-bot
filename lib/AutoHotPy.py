@@ -1,3 +1,5 @@
+# TAKEN FROM https://github.com/dc740/AutoHotPy/blob/master/AutoHotPy.py
+
 # -*- coding: utf-8 -*-
 """
 @author: Emilio Moretti
@@ -18,7 +20,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 from lib.InterceptionWrapper import *
-import collections,time,threading,Queue,copy,ctypes
+import collections,time,threading,queue,copy,ctypes
 
 
 class FunctionRunner(threading.Thread):
@@ -99,9 +101,9 @@ class AutoHotPy(object):
         #default interval between keypress
         self.default_interval = 0.01
         #Threads queue
-        self.kb_queue = Queue.Queue()
-        self.mouse_queue = Queue.Queue()
-        self.macro_queue = Queue.Queue()
+        self.kb_queue = queue.Queue()
+        self.mouse_queue = queue.Queue()
+        self.macro_queue = queue.Queue()
         
         # Handlers
         self.keyboard_handler_down = collections.defaultdict(self.__default_element)
@@ -542,6 +544,7 @@ class AutoHotPy(object):
     def start(self):
         if (not self.exit_configured):
             raise Exception("Configure a way to close the process before starting")
+        
         #Load the dll and setup the required functions
         self.interception = InterceptionWrapper()
         # Setup context

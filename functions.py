@@ -8,7 +8,7 @@ import cv2
 import win32gui
 
 
-WINDOW_SUBSTRING = "Lineage"
+WINDOW_SUBSTRING = "Asterios"
 
 
 # Brazenhem algo
@@ -107,20 +107,20 @@ def get_target_centers(img):
     # Hide your name in first camera position (default)
     img[210:230, 350:440] = (0, 0, 0)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # cv2.imwrite('1_gray_img.png', gray)
+    cv2.imwrite('1_gray_img.png', gray)
 
     # Find only white text
     ret, threshold1 = cv2.threshold(gray, 252, 255, cv2.THRESH_BINARY)
-    # cv2.imwrite('2_threshold1_img.png', threshold1)
+    cv2.imwrite('2_threshold1_img.png', threshold1)
 
     # Morphological transformation
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (50, 5))
     closed = cv2.morphologyEx(threshold1, cv2.MORPH_CLOSE, kernel)
-    # cv2.imwrite('3_morphologyEx_img.png', closed)
+    cv2.imwrite('3_morphologyEx_img.png', closed)
     closed = cv2.erode(closed, kernel, iterations=1)
-    # cv2.imwrite('4_erode_img.png', closed)
+    cv2.imwrite('4_erode_img.png', closed)
     closed = cv2.dilate(closed, kernel, iterations=1)
-    # cv2.imwrite('5_dilate_img.png', closed)
+    cv2.imwrite('5_dilate_img.png', closed)
 
-    (_, centers, hierarchy) = cv2.findContours(closed, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    centers, _ = cv2.findContours(closed, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     return centers
